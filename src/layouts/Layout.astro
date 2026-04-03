@@ -4,7 +4,7 @@ interface Props {
   showNewsletter?: boolean
 }
 
-const { title, showNewsletter = true } = Astro.props
+const { title, showNewsletter = false } = Astro.props
 
 import '@fontsource-variable/inter'
 import NavComponent from '@/components/NavComponent.astro'
@@ -19,7 +19,7 @@ import '@/styles/global.css'
     <meta charset="UTF-8" />
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/website_logo.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Astro Portfolio Starter</title>
     <ClientRouter />
@@ -37,7 +37,7 @@ import '@/styles/global.css'
 
     <footer
       class:list={[
-        'bg-indigo-700 text-base text-gray-100',
+        'bg-blue-700 text-base text-gray-100',
         { 'mt-auto': !showNewsletter },
       ]}
     >
@@ -46,14 +46,14 @@ import '@/styles/global.css'
       >
         <div class="text-sm">
           Copyright {new Date().getFullYear()}. View source on <a
-            href="https://github.com/drehimself/astro-portfolio-starter"
+            href="https://github.com/benwittbrodt"
             class="underline hover:text-gray-400">GitHub</a
           >.
         </div>
         <ul class="flex items-center space-x-8 mt-8 sm:mt-0">
           <li>
             <a
-              href="mailto:me@andremadarang.com"
+              href="mailto:ben@wittbrodt.me"
               class="text-gray-100 hover:text-gray-400"
             >
               <svg
@@ -70,25 +70,24 @@ import '@/styles/global.css'
 
           <li>
             <a
-              href="https://youtube.com/drehimself"
+              href="https://instagram.com/benwittbrodt"
               target="_blank"
               class="text-gray-100 hover:text-gray-400"
             >
               <svg
-                width="26"
+                width="20"
                 height="20"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="M25.457 3.13c-.3-1.232-1.18-2.203-2.299-2.532C21.13 0 13 0 13 0S4.87 0 2.842.598c-1.119.33-2 1.3-2.299 2.531C0 5.362 0 10.02 0 10.02s0 4.658.543 6.891c.3 1.232 1.18 2.162 2.299 2.49C4.87 20 13 20 13 20s8.13 0 10.158-.598c1.119-.33 2-1.26 2.299-2.49C26 14.677 26 10.02 26 10.02s0-4.658-.543-6.89zM10.34 14.25V5.79l6.795 4.23-6.795 4.23z"
-                  fill-rule="nonzero"></path></svg
+                viewBox="0 0 24 24"
+                ><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg
               >
             </a>
           </li>
 
           <li>
             <a
-              href="https://github.com/drehimself"
+              href="https://github.com/benwittbrodt"
               target="_blank"
               class="text-gray-100 hover:text-gray-400"
             >
@@ -106,18 +105,17 @@ import '@/styles/global.css'
 
           <li>
             <a
-              href="https://twitter.com/drehimself"
+              href="https://x.com/BTWittbrodt"
               target="_blank"
               class="text-gray-100 hover:text-gray-400"
             >
               <svg
                 width="20"
-                height="17"
+                height="20"
                 fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg"
-                ><path
-                  d="M19.807 1.943a8.588 8.588 0 0 1-2.036 2.135 11.918 11.918 0 0 1-.465 3.854 12.085 12.085 0 0 1-1.452 3.177 12.426 12.426 0 0 1-2.318 2.691c-.897.78-1.978 1.402-3.243 1.867-1.265.464-2.618.697-4.06.697-2.27 0-4.348-.618-6.233-1.854.293.034.62.051.98.051 1.885 0 3.565-.588 5.04-1.764a3.915 3.915 0 0 1-2.363-.825 4.038 4.038 0 0 1-1.432-2.039c.276.043.532.064.766.064.36 0 .717-.047 1.068-.14A3.982 3.982 0 0 1 1.73 8.43c-.617-.754-.925-1.63-.925-2.627v-.051c.57.324 1.182.498 1.835.524a4.1 4.1 0 0 1-1.32-1.47 4.078 4.078 0 0 1-.49-1.969c0-.75.185-1.445.553-2.084a11.548 11.548 0 0 0 3.702 3.05 11.163 11.163 0 0 0 4.669 1.271c-.067-.324-.1-.639-.1-.946 0-1.142.395-2.116 1.187-2.92C11.632.402 12.589 0 13.712 0c1.173 0 2.161.435 2.966 1.304a7.878 7.878 0 0 0 2.576-.997 3.997 3.997 0 0 1-1.785 2.275 7.98 7.98 0 0 0 2.338-.639z"
-                  fill-rule="nonzero"></path></svg
+                viewBox="0 0 24 24"
+                ><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg
               >
             </a>
           </li>

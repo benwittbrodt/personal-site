@@ -1,7 +1,7 @@
 ---
 import DatePresenter from '@/components/DatePresenter.astro'
 import TagsPresenter from '@/components/TagsPresenter.astro'
-import { type CollectionEntry } from 'astro:content'
+import type { NormalizedPost } from '@/lib/strapi'
 import type { Page } from 'astro'
 
 const {
@@ -10,8 +10,8 @@ const {
   tag = null,
   total = null,
 } = Astro.props as {
-  page: Page<CollectionEntry<'posts'>>
-  posts: Array<CollectionEntry<'posts'>>
+  page: Page<NormalizedPost>
+  posts: NormalizedPost[]
   tag: string | null
   total: number | null
 }
@@ -33,27 +33,29 @@ const {
         <div class="post py-8">
           <div class="text-base flex gap-2">
             <DatePresenter
-              date={post.data.date}
-              transitionName={post.data.date.toString()}
+              date={post.date}
+              transitionName={post.date.toString()}
             />
           </div>
-          <h2 class="text-3xl font-bold mt-1" transition:name={post.data.title}>
+          <h2 class="text-3xl font-bold mt-1" transition:name={post.title}>
             <a
-              href={`/posts/${post.slug}`}
+              href={`/articles/${post.slug}`}
               class="hover:text-gray-500 dark:hover:text-gray-300"
             >
-              {post.data.title}
+              {post.title}
             </a>
           </h2>
 
-          <TagsPresenter tags={post.data.tags} />
+          {post.tags.length > 0 && <TagsPresenter tags={post.tags} />}
 
-          <div class="line-clamp-3 text-gray-600 dark:text-gray-300 mt-4">
-            {post.data.summary}
-          </div>
+          {post.summary && (
+            <div class="line-clamp-3 text-gray-600 dark:text-gray-300 mt-4">
+              {post.summary}
+            </div>
+          )}
           <div class="mt-4">
             <a
-              href={`/posts/${post.slug}`}
+              href={`/articles/${post.slug}`}
               class="font-bold uppercase hover:text-gray-500 dark:hover:text-gray-300"
             >
               Read More

@@ -1,33 +1,18 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { getCollection } from 'astro:content'
-import { type CollectionEntry } from 'astro:content'
+import { getPosts } from '@/lib/strapi'
+import { normalizePost } from '@/lib/strapi-blocks'
 
-const posts: Array<CollectionEntry<'posts'>> = await getCollection('posts')
-const tags = [...new Set(posts.map(post => post.data.tags).flat())]
-
-const tagsWithDuplicates = posts.map(post => post.data.tags).flat()
+const posts = (await getPosts()).map(normalizePost)
+const allTags = posts.flatMap(post => post.tags)
+const tags = [...new Set(allTags)]
 
 const tagsWithTotals = tags.map(tag => ({
   name: tag,
-  total: tagsWithDuplicates.filter(x => x === tag).length,
+  total: allTags.filter(t => t === tag).length,
 }))
 
-// Sort totals in desc order. If same total, sort by tag name
-tagsWithTotals.sort((a, b) => b.total - a.total || sortByName(a.name, b.name))
-
-function sortByName(a: string, b: string) {
-  const nameA = a.toLowerCase()
-  const nameB = b.toLowerCase()
-  if (nameA < nameB) {
-    return -1
-  }
-  if (nameA > nameB) {
-    return 1
-  }
-
-  return 0
-}
+tagsWithTotals.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
 ---
 
 <Layout title="Tags">
@@ -36,19 +21,23 @@ function sortByName(a: string, b: string) {
   >
     <h2 class="text-4xl font-semibold">Tags ({tags.length})</h2>
 
-    <ul class="flex items-center flex-wrap text-sm gap-x-6 gap-y-8 mt-8">
-      {
-        tagsWithTotals.map(tag => (
-          <li>
-            <a
-              href={`/tags/${tag.name}`}
-              class="bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-200 dark:hover:bg-indigo-300 text-indigo-800 rounded-lg px-3 py-2"
-            >
-              {tag.name} ({tag.total})
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      tags.length === 0 ? (
+        <p class="mt-8 text-gray-500 dark:text-gray-400">No tags yet.</p>
+      ) : (
+        <ul class="flex items-center flex-wrap text-sm gap-x-6 gap-y-8 mt-8">
+          {tagsWithTotals.map(tag => (
+            <li>
+              <a
+                href={`/tags/${tag.name}`}
+                class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-200 dark:hover:bg-blue-300 text-blue-800 rounded-lg px-3 py-2"
+              >
+                {tag.name} ({tag.total})
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </section>
 </Layout>

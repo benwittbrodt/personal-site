@@ -1,10 +1,5 @@
-import { type CollectionEntry } from 'astro:content'
+import type { NormalizedPost } from '@/lib/strapi'
 
-export function sortPostsByDateDesc(
-  postA: CollectionEntry<'posts'>,
-  postB: CollectionEntry<'posts'>
-) {
-  return (
-    new Date(postB.data.date).getTime() - new Date(postA.data.date).getTime()
-  )
+export function sortPostsByDateDesc(a: NormalizedPost, b: NormalizedPost) {
+  return b.date.getTime() - a.date.getTime()
 }

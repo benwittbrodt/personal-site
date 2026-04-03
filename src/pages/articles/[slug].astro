@@ -1,11 +1,12 @@
 ---
-import { getCollection } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 import DatePresenter from '@/components/DatePresenter.astro'
 import TagsPresenter from '@/components/TagsPresenter.astro'
+import { getPosts } from '@/lib/strapi'
+import { normalizePost } from '@/lib/strapi-blocks'
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts')
+  const posts = (await getPosts()).map(normalizePost)
   return posts.map(post => ({
     params: { slug: post.slug },
     props: { post },
@@ -13,35 +14,33 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props
-const { Content } = await post.render()
 ---
 
-<Layout title={post.data.title}>
+<Layout title={post.title}>
   <section
     class="mx-auto max-w-3xl dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20"
   >
     <div class="post py-8">
       <div class="text-base flex gap-2">
         <DatePresenter
-          date={post.data.date}
-          transitionName={post.data.date.toString()}
+          date={post.date}
+          transitionName={post.date.toString()}
         />
       </div>
-      <h2 class="text-4xl font-bold mt-1" transition:name={post.data.title}>
-        {post.data.title}
+      <h2 class="text-4xl font-bold mt-1" transition:name={post.title}>
+        {post.title}
       </h2>
-      <TagsPresenter tags={post.data.tags} />
+      {post.tags.length > 0 && <TagsPresenter tags={post.tags} />}
       <div
         class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300 mt-8"
-      >
-        <Content />
-      </div>
+        set:html={post.contentHtml}
+      />
       <div class="pt-8 mt-8 border-t border-gray-300 dark:border-gray-700">
         <a
-          href="/blog"
+          href="/articles"
           class="font-bold uppercase hover:text-gray-500 dark:hover:text-gray-300"
         >
-          Back to Blog
+          Back to Articles
         </a>
       </div>
     </div>

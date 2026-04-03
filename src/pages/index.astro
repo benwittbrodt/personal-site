@@ -8,9 +8,14 @@ import mindMapImage from '@/images/mind-map.svg'
 import codeReviewImage from '@/images/code-review.svg'
 import dotsTriangle from '@/images/dots-triangle.svg'
 import avatarImage from '@/images/avatar.png'
+import { getBackground } from '@/lib/strapi'
+import { blocksToHtml } from '@/lib/strapi-blocks'
+
+const background = await getBackground()
+const summaryHtml = blocksToHtml(background.ProfessionalSummary)
 ---
 
-<Layout title="Home">
+<Layout title="Home" showNewsletter={false}>
   <main>
     <section
       class="hero mx-auto max-w-3xl flex flex-col sm:flex-row justify-between py-16 mt-24 px-4 xl:px-0"
@@ -20,7 +25,7 @@ import avatarImage from '@/images/avatar.png'
           Astro Portfolio Starter
         </div>
         <div
-          class="text-indigo-700 dark:text-indigo-500 leading-tight sm:mr-16"
+          class="text-blue-700 dark:text-blue-500 leading-tight sm:mr-16"
         >
           Powered by Astro and Tailwind CSS
         </div>
@@ -62,7 +67,7 @@ import avatarImage from '@/images/avatar.png'
         <Image src={dotsTriangle} alt="dots" class="hidden xl:block" />
       </div>
 
-      <ul class="text-indigo-600 dark:text-indigo-500 mt-10 space-y-6">
+      <ul class="text-blue-600 dark:text-blue-500 mt-10 space-y-6">
         <li class="flex items-start">
           <IconCheckmark />
           <span class="ml-4">
@@ -119,32 +124,6 @@ import avatarImage from '@/images/avatar.png'
     </section>
 
     <section
-      id="about"
-      class="scroll-mt-32 max-w-3xl mx-auto relative px-4 xl:px-0"
-    >
-      <h3 class="dark:text-gray-100 font-bold">Get to know me</h3>
-
-      <div class="flex items-center flex-col sm:flex-row mt-6">
-        <Image src={avatarImage} alt="avatar" class="rounded-full w-32 h-32" />
-        <div>
-          <p class="dark:text-gray-100 sm:ml-6 mt-6 sm:mt-0">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam
-            quam praesentium eligendi autem voluptate vero quo voluptatem, qui
-            possimus debitis iste amet ea voluptatum aut consectetur. Velit quos
-            at explicabo?
-          </p>
-        </div>
-      </div>
-
-      <div class="my-16">
-        <iframe
-          class="w-full aspect-video"
-          src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=1BVDnJeZozmDWGGk"
-          allowfullscreen></iframe>
-      </div>
-    </section>
-
-    <section
       id="contact"
       class="scroll-mt-28 bg-gray-100 dark:bg-slate-800 mt-10 py-12 px-4 xl:px-0"
     >
@@ -155,63 +134,142 @@ import avatarImage from '@/images/avatar.png'
           <Image src={dotsTriangle} alt="dots" />
         </div>
 
-        <p class="dark:text-gray-100 mt-6">
-          Static sites cannot submit forms on their own. However, services like
-          <Link href="https://www.netlify.com/docs/form-handling" newTab>
-            Netlify Forms
-          </Link>
-          or
-          <Link href="https://formspree.io" newTab>FormSpree</Link>
-          can help you do this without a backend.
-        </p>
+        <form id="index-contact-form" class="mt-12 flex flex-col gap-5">
+          <!-- honeypot -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+            <label for="index-website">Website</label>
+            <input id="index-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
 
-        <div class="mt-12">
-          <form action="#" class="grid grid-cols-2 gap-6">
-            <div class="col-span-2 sm:col-span-1">
-              <label for="name" class="block dark:text-gray-100">Name</label>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label for="index-first-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
               <input
+                id="index-first-name"
+                name="firstName"
                 type="text"
-                name="name"
-                id="name"
-                placeholder="Your name"
-                class="block dark:bg-slate-700 dark:text-gray-100 w-full rounded-md border-0 text-gray-900 shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 p-4 mt-2"
+                required
+                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div class="col-span-2 sm:col-span-1">
-              <label for="email" class="block dark:text-gray-100">Email</label>
+            <div class="flex flex-col gap-1">
+              <label for="index-last-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
               <input
+                id="index-last-name"
+                name="lastName"
                 type="text"
-                name="email"
-                id="email"
-                placeholder="Your email"
-                class="block dark:bg-slate-700 dark:text-gray-100 w-full rounded-md border-0 text-gray-900 shadow-sm placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 p-4 mt-2"
+                required
+                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+          </div>
 
-            <div class="col-span-2">
-              <label for="message" class="block dark:text-gray-100"
-                >Message</label
-              >
-              <textarea
-                rows="8"
-                name="message"
-                id="message"
-                class="block dark:bg-slate-700 dark:text-gray-100 w-full rounded-md border-0 text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 dark:ring-slate-700 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 dark:focus:ring-indigo-600 p-4 mt-2"
-                placeholder="Enter your message here"></textarea>
-            </div>
+          <div class="flex flex-col gap-1">
+            <label for="index-email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input
+              id="index-email"
+              name="email"
+              type="email"
+              required
+              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p id="index-email-error" class="text-xs text-red-600 dark:text-red-400 hidden">Please enter a valid email address.</p>
+          </div>
 
-            <div class="col-span-2">
-              <div class="flex justify-end w-full">
-                <input
-                  type="submit"
-                  value="Submit"
-                  class="block bg-indigo-700 hover:bg-indigo-900 focus:bg-indigo-900 text-white text-sm font-semibold tracking-wide uppercase shadow-sm rounded-sm cursor-pointer px-6 py-3"
-                />
-              </div>
-            </div>
-          </form>
-        </div>
+          <div class="flex flex-col gap-1">
+            <label for="index-message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+            <textarea
+              id="index-message"
+              name="message"
+              required
+              rows="5"
+              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="self-start rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium px-6 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            Send message
+          </button>
+
+          <p id="index-form-status" class="text-sm hidden"></p>
+        </form>
       </div>
     </section>
   </main>
 </Layout>
+
+<script>
+  const form = document.getElementById('index-contact-form') as HTMLFormElement
+  const status = document.getElementById('index-form-status') as HTMLParagraphElement
+  const button = form.querySelector('button[type="submit"]') as HTMLButtonElement
+  const emailInput = form.elements.namedItem('email') as HTMLInputElement
+  const emailError = document.getElementById('index-email-error') as HTMLParagraphElement
+  const honeypot = form.elements.namedItem('website') as HTMLInputElement
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const loadedAt = Date.now()
+
+  emailInput.addEventListener('blur', () => {
+    if (emailInput.value && !emailRegex.test(emailInput.value)) {
+      emailError.classList.remove('hidden')
+      emailInput.classList.add('border-red-500')
+    } else {
+      emailError.classList.add('hidden')
+      emailInput.classList.remove('border-red-500')
+    }
+  })
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    if (honeypot.value || Date.now() - loadedAt < 3000) {
+      status.textContent = 'Message sent! I\'ll get back to you soon.'
+      status.className = 'text-sm text-green-600 dark:text-green-400'
+      status.classList.remove('hidden')
+      form.reset()
+      return
+    }
+
+    if (!emailRegex.test(emailInput.value)) {
+      emailError.classList.remove('hidden')
+      emailInput.classList.add('border-red-500')
+      emailInput.focus()
+      return
+    }
+
+    button.disabled = true
+    button.textContent = 'Sending…'
+    status.classList.add('hidden')
+
+    const data = {
+      firstName: (form.elements.namedItem('firstName') as HTMLInputElement).value,
+      lastName: (form.elements.namedItem('lastName') as HTMLInputElement).value,
+      email: emailInput.value,
+      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+    }
+
+    try {
+      const res = await fetch('https://n8n.811mapleton.com/webhook/600a9966-580c-4a2d-bb77-bc493552a0ab', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+
+      if (!res.ok) throw new Error()
+
+      status.textContent = 'Message sent! I\'ll get back to you soon.'
+      status.className = 'text-sm text-green-600 dark:text-green-400'
+      form.reset()
+    } catch {
+      status.textContent = 'Something went wrong. Please try again.'
+      status.className = 'text-sm text-red-600 dark:text-red-400'
+    } finally {
+      status.classList.remove('hidden')
+      button.disabled = false
+      button.textContent = 'Send message'
+    }
+  })
+</script>

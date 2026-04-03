@@ -1,0 +1,148 @@
+---
+import Layout from '@/layouts/Layout.astro'
+---
+
+<Layout title="Contact" showNewsletter={false}>
+  <section class="mx-auto max-w-3xl dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20">
+    <h2 class="text-4xl font-bold mb-10">
+      Get in <span class="text-blue-700 dark:text-blue-400">Touch</span>
+    </h2>
+
+    <form id="contact-form" class="flex flex-col gap-5 max-w-lg">
+      <!-- honeypot: hidden from real users, bots fill it in -->
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+        <label for="website">Website</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col gap-1">
+          <label for="first-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
+          <input
+            id="first-name"
+            name="firstName"
+            type="text"
+            required
+            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div class="flex flex-col gap-1">
+          <label for="last-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
+          <input
+            id="last-name"
+            name="lastName"
+            type="text"
+            required
+            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <p id="email-error" class="text-xs text-red-600 dark:text-red-400 hidden">Please enter a valid email address.</p>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows="5"
+          class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="self-start rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium px-6 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        Send message
+      </button>
+
+      <p id="form-status" class="text-sm hidden"></p>
+    </form>
+  </section>
+
+  <script>
+    const form = document.getElementById('contact-form') as HTMLFormElement
+    const status = document.getElementById('form-status') as HTMLParagraphElement
+    const button = form.querySelector('button[type="submit"]') as HTMLButtonElement
+    const emailInput = form.elements.namedItem('email') as HTMLInputElement
+    const emailError = document.getElementById('email-error') as HTMLParagraphElement
+    const honeypot = form.elements.namedItem('website') as HTMLInputElement
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const loadedAt = Date.now()
+
+    emailInput.addEventListener('blur', () => {
+      if (emailInput.value && !emailRegex.test(emailInput.value)) {
+        emailError.classList.remove('hidden')
+        emailInput.classList.add('border-red-500')
+      } else {
+        emailError.classList.add('hidden')
+        emailInput.classList.remove('border-red-500')
+      }
+    })
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      // bot checks: honeypot filled or submitted in under 3 seconds
+      if (honeypot.value || Date.now() - loadedAt < 3000) {
+        // silently succeed so bots don't know they were blocked
+        status.textContent = 'Message sent! I\'ll get back to you soon.'
+        status.className = 'text-sm text-green-600 dark:text-green-400'
+        status.classList.remove('hidden')
+        form.reset()
+        return
+      }
+
+      if (!emailRegex.test(emailInput.value)) {
+        emailError.classList.remove('hidden')
+        emailInput.classList.add('border-red-500')
+        emailInput.focus()
+        return
+      }
+
+      button.disabled = true
+      button.textContent = 'Sending…'
+      status.classList.add('hidden')
+
+      const data = {
+        firstName: (form.elements.namedItem('firstName') as HTMLInputElement).value,
+        lastName: (form.elements.namedItem('lastName') as HTMLInputElement).value,
+        email: emailInput.value,
+        message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
+      }
+
+      try {
+        const res = await fetch('https://n8n.811mapleton.com/webhook/600a9966-580c-4a2d-bb77-bc493552a0ab', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        })
+
+        if (!res.ok) throw new Error()
+
+        status.textContent = 'Message sent! I\'ll get back to you soon.'
+        status.className = 'text-sm text-green-600 dark:text-green-400'
+        form.reset()
+      } catch {
+        status.textContent = 'Something went wrong. Please try again.'
+        status.className = 'text-sm text-red-600 dark:text-red-400'
+      } finally {
+        status.classList.remove('hidden')
+        button.disabled = false
+        button.textContent = 'Send message'
+      }
+    })
+  </script>
+</Layout>

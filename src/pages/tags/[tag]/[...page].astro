@@ -1,20 +1,17 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import PostsList from '@/components/PostsList.astro'
-import { getCollection } from 'astro:content'
-import { sortPostsByDateDesc } from '@/utils/post-utils.ts'
-import { type CollectionEntry } from 'astro:content'
+import { getPosts } from '@/lib/strapi'
+import { normalizePost } from '@/lib/strapi-blocks'
+import { sortPostsByDateDesc } from '@/utils/post-utils'
 import type { GetStaticPathsOptions } from 'astro'
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const posts: Array<CollectionEntry<'posts'>> = (
-    await getCollection('posts')
-  ).sort(sortPostsByDateDesc)
-  const tags = [...new Set(posts.map(post => post.data.tags).flat())]
+  const posts = (await getPosts()).map(normalizePost).sort(sortPostsByDateDesc)
+  const tags = [...new Set(posts.flatMap(post => post.tags))]
 
   return tags.flatMap(tag => {
-    const tagPosts = posts.filter(post => post.data.tags.includes(tag))
-
+    const tagPosts = posts.filter(post => post.tags.includes(tag))
     return paginate(tagPosts, {
       pageSize: 2,
       params: { tag },

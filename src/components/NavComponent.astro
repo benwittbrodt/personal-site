@@ -1,39 +1,26 @@
 ---
 import { Image } from 'astro:assets'
-import logoForLight from '@/images/astro-logo-for-light-mode.svg'
-import logoForDark from '@/images/astro-logo-for-dark-mode.svg'
+import logo from '@/images/website_logo.png'
 
 const navigation = [
-  { href: '/#projects', title: 'Projects', newTab: false },
-  { href: '/#about', title: 'About', newTab: false },
-  { href: '/#contact', title: 'Contact', newTab: false },
-  { href: '/tags', title: 'Tags', newTab: false },
-  { href: '/blog', title: 'Blog', newTab: false },
+  { href: '/', title: 'Home', newTab: false },
+  { href: '/articles', title: 'Articles', newTab: false },
+  { href: '/background', title: 'Background', newTab: false },
+  { href: '/contact', title: 'Contact', newTab: false },
 ]
 
 const pathname = Astro.url.pathname.split('/')[1]
 ---
 
 <header
-  class="fixed bg-white dark:bg-slate-900 dark:text-gray-100 top-0 left-0 w-full z-40 border-t-[14px] border-indigo-600"
+  class="fixed bg-white dark:bg-slate-900 dark:text-gray-100 top-0 left-0 w-full z-40 border-t-[14px] border-blue-600"
 >
   <nav
     class="container mx-auto flex flex-wrap items-center justify-between py-6 px-4 xl:px-0"
   >
     <div class="h-12">
       <a href="/">
-        <Image
-          src={logoForLight}
-          alt="logo"
-          id="logoForLight"
-          class="w-auto h-12 hidden"
-        />
-        <Image
-          src={logoForDark}
-          alt="logo"
-          id="logoForDark"
-          class="w-auto h-12 hidden"
-        />
+        <Image src={logo} alt="logo" class="w-auto h-12" />
       </a>
     </div>
 
@@ -112,7 +99,7 @@ const pathname = Astro.url.pathname.split('/')[1]
                   {
                     'underline underline-offset-4 decoration-wavy':
                       (pathname && nav.href.includes(pathname)) ||
-                      (pathname === 'posts' && nav.href === '/blog'),
+                      (pathname === 'posts' && nav.href === '/articles'),
                   },
                 ]}
               >
@@ -135,7 +122,7 @@ const pathname = Astro.url.pathname.split('/')[1]
       }
       <li>
         <a
-          href="https://github.com/drehimself/astro-portfolio-starter"
+          href="https://github.com/benwittbrodt"
           target="_blank"
           rel="noopener noreferrer"
           class="hover:text-gray-500 dark:hover:text-gray-300"
@@ -158,8 +145,6 @@ const pathname = Astro.url.pathname.split('/')[1]
   document.addEventListener('astro:page-load', () => {
     const moonIcon = document.querySelector('#moonIcon') as Element
     const sunIcon = document.querySelector('#sunIcon') as Element
-    const logoForLight = document.querySelector('#logoForLight') as Element
-    const logoForDark = document.querySelector('#logoForDark') as Element
 
     const themeToggle = document.querySelector('#themeToggle') as Element
     const mobileNav = document.querySelector('#mobileNav') as Element
@@ -215,13 +200,9 @@ const pathname = Astro.url.pathname.split('/')[1]
       localStorage.setItem('theme', isDark ? 'dark' : 'light')
 
       if (isDark) {
-        logoForDark.classList.remove('hidden')
-        logoForLight.classList.add('hidden')
         moonIcon.classList.add('hidden')
         sunIcon.classList.remove('hidden')
       } else {
-        logoForDark.classList.add('hidden')
-        logoForLight.classList.remove('hidden')
         moonIcon.classList.remove('hidden')
         sunIcon.classList.add('hidden')
       }
@@ -237,8 +218,6 @@ const pathname = Astro.url.pathname.split('/')[1]
   document.addEventListener('astro:after-swap', () => {
     const moonIcon = document.querySelector('#moonIcon') as Element
     const sunIcon = document.querySelector('#sunIcon') as Element
-    const logoForLight = document.querySelector('#logoForLight') as Element
-    const logoForDark = document.querySelector('#logoForDark') as Element
 
     const theme = getTheme()
     setInitialTheme(theme)
@@ -259,11 +238,9 @@ const pathname = Astro.url.pathname.split('/')[1]
     function setInitialTheme(theme: string) {
       if (theme === 'light') {
         document.documentElement.classList.remove('dark')
-        logoForLight.classList.remove('hidden')
         moonIcon.classList.remove('hidden')
       } else {
         document.documentElement.classList.add('dark')
-        logoForDark.classList.remove('hidden')
         sunIcon.classList.remove('hidden')
       }
 
