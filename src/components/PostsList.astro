@@ -2,6 +2,7 @@
 import DatePresenter from '@/components/DatePresenter.astro'
 import TagsPresenter from '@/components/TagsPresenter.astro'
 import type { NormalizedPost } from '@/lib/strapi'
+import { getMediaUrl } from '@/lib/strapi'
 import type { Page } from 'astro'
 
 const {
@@ -31,6 +32,16 @@ const {
     {
       posts.map(post => (
         <div class="post py-8">
+          {post.featuredImage && (
+            <a href={`/articles/${post.slug}`}>
+              <img
+                src={getMediaUrl(post.featuredImage.formats?.medium?.url ?? post.featuredImage.url)}
+                alt={post.featuredImage.alternativeText ?? post.title}
+                class="w-full h-56 object-cover rounded-lg mb-5"
+                transition:name={`featured-image-${post.slug}`}
+              />
+            </a>
+          )}
           <div class="text-base flex gap-2">
             <DatePresenter
               date={post.date}

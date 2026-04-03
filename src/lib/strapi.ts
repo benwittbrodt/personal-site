@@ -58,6 +58,8 @@ export interface StrapiPost {
   Title: string
   Slug: string | null
   Content: StrapiNode[] | null
+  FeaturedImage: StrapiMedia | null
+  PreviewText: string | null
   createdAt: string
   updatedAt: string
   publishedAt: string
@@ -83,6 +85,7 @@ export interface NormalizedPost {
   tags: string[]
   contentHtml: string
   documentId: string
+  featuredImage: StrapiMedia | null
 }
 
 // --- Helpers ---
@@ -106,7 +109,7 @@ async function strapiGet<T>(path: string): Promise<T> {
 }
 
 export async function getPosts(): Promise<StrapiPost[]> {
-  return strapiGet<StrapiPost[]>('/api/posts?sort=publishedAt:desc&pagination[pageSize]=100')
+  return strapiGet<StrapiPost[]>('/api/posts?sort=publishedAt:desc&pagination[pageSize]=100&populate=FeaturedImage')
 }
 
 export async function getBackground(): Promise<StrapiBackground> {

@@ -97,7 +97,8 @@ const pathname = Astro.url.pathname.split('/')[1]
                 class:list={[
                   'hover:text-gray-500 menuItem dark:hover:text-gray-300',
                   {
-                    'underline underline-offset-4 decoration-wavy':
+                    'text-blue-700 dark:text-blue-400':
+                      (pathname === '' && nav.href === '/') ||
                       (pathname && nav.href.includes(pathname)) ||
                       (pathname === 'posts' && nav.href === '/articles'),
                   },

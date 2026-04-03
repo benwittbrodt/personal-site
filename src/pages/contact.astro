@@ -1,74 +1,104 @@
 ---
 import Layout from '@/layouts/Layout.astro'
+import { Image } from 'astro:assets'
+import headshot from '@/images/headshot.jpg'
 ---
 
 <Layout title="Contact" showNewsletter={false}>
   <section class="mx-auto max-w-3xl dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20">
-    <h2 class="text-4xl font-bold mb-10">
-      Get in <span class="text-blue-700 dark:text-blue-400">Touch</span>
-    </h2>
 
-    <form id="contact-form" class="flex flex-col gap-5 max-w-lg">
-      <!-- honeypot: hidden from real users, bots fill it in -->
-      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
-        <label for="website">Website</label>
-        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
-      </div>
-      <div class="grid grid-cols-2 gap-4">
-        <div class="flex flex-col gap-1">
-          <label for="first-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
-          <input
-            id="first-name"
-            name="firstName"
-            type="text"
-            required
-            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label for="last-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
-          <input
-            id="last-name"
-            name="lastName"
-            type="text"
-            required
-            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      </div>
+    <div class="flex flex-col sm:flex-row gap-12 items-start">
 
-      <div class="flex flex-col gap-1">
-        <label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      <!-- Left: headshot + intro -->
+      <div class="flex flex-col items-center sm:items-start gap-5 sm:w-80 shrink-0">
+        <Image
+          src={headshot}
+          alt="Ben Wittbrodt"
+          class="w-72 h-72 object-cover rounded-2xl shadow-md"
         />
-        <p id="email-error" class="text-xs text-red-600 dark:text-red-400 hidden">Please enter a valid email address.</p>
+        <div>
+          <h2 class="text-2xl font-bold">Ben Wittbrodt</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
+            Have a question, collab idea, or just want to say hi? Fill out the form and I'll get back to you.
+          </p>
+          <div class="flex flex-col gap-1 mt-4 text-sm text-gray-500 dark:text-gray-400">
+            <a href="mailto:ben@wittbrodt.me" class="hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+              ben@wittbrodt.me
+            </a>
+          </div>
+        </div>
       </div>
 
-      <div class="flex flex-col gap-1">
-        <label for="message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
-        <textarea
-          id="message"
-          name="message"
-          required
-          rows="5"
-          class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-        ></textarea>
+      <!-- Right: form -->
+      <div class="flex-1 w-full">
+        <h2 class="text-3xl font-bold mb-6">
+          Get in <span class="text-blue-700 dark:text-blue-400">Touch</span>
+        </h2>
+
+        <form id="contact-form" class="flex flex-col gap-5">
+          <!-- honeypot: hidden from real users, bots fill it in -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+            <label for="website">Website</label>
+            <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1">
+              <label for="first-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
+              <input
+                id="first-name"
+                name="firstName"
+                type="text"
+                required
+                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <div class="flex flex-col gap-1">
+              <label for="last-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
+              <input
+                id="last-name"
+                name="lastName"
+                type="text"
+                required
+                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <p id="email-error" class="text-xs text-red-600 dark:text-red-400 hidden">Please enter a valid email address.</p>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="5"
+              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="self-start rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium px-6 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            Send message
+          </button>
+
+          <p id="form-status" class="text-sm hidden"></p>
+        </form>
       </div>
-
-      <button
-        type="submit"
-        class="self-start rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium px-6 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-      >
-        Send message
-      </button>
-
-      <p id="form-status" class="text-sm hidden"></p>
-    </form>
+    </div>
   </section>
 
   <script>

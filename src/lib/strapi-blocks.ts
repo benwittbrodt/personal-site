@@ -89,9 +89,10 @@ export function normalizePost(post: StrapiPost): NormalizedPost {
     slug: post.Slug ?? String(post.id),
     title: post.Title,
     date: new Date(post.publishedAt),
-    summary: extractSummary(post.Content),
+    summary: post.PreviewText ?? extractSummary(post.Content),
     tags: [],
     contentHtml: post.Content ? blocksToHtml(post.Content) : '',
     documentId: post.documentId,
+    featuredImage: post.FeaturedImage ?? null,
   }
 }
