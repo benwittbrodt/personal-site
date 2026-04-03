@@ -1,275 +1,126 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import IconCheckmark from '@/components/IconCheckmark.astro'
-import Link from '@/components/Link.astro'
 import { Image } from 'astro:assets'
-import developerImage from '@/images/developer.svg'
-import mindMapImage from '@/images/mind-map.svg'
-import codeReviewImage from '@/images/code-review.svg'
-import dotsTriangle from '@/images/dots-triangle.svg'
-import avatarImage from '@/images/avatar.png'
-import { getBackground } from '@/lib/strapi'
-import { blocksToHtml } from '@/lib/strapi-blocks'
+import headshot from '@/images/headshot.jpg'
+import { getPosts, getMediaUrl } from '@/lib/strapi'
+import { normalizePost } from '@/lib/strapi-blocks'
+import DatePresenter from '@/components/DatePresenter.astro'
 
-const background = await getBackground()
-const summaryHtml = blocksToHtml(background.ProfessionalSummary)
+const allPosts = (await getPosts()).map(normalizePost)
+const recentPosts = allPosts.slice(0, 3)
+
+const topics = [
+  {
+    title: 'Personal Finance',
+    description: 'Practical takes on budgeting, investing, and building wealth on your own terms.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
+  },
+  {
+    title: 'Watches',
+    description: 'Thoughts on horology, collecting, and the watches worth your time and money.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`,
+  },
+  {
+    title: 'Home Automation',
+    description: 'Smart home setups, self-hosted tools, and making your home actually work for you.',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>`,
+  },
+]
 ---
 
 <Layout title="Home" showNewsletter={false}>
   <main>
-    <section
-      class="hero mx-auto max-w-3xl flex flex-col sm:flex-row justify-between py-16 mt-24 px-4 xl:px-0"
-    >
-      <div class="text-4xl font-bold text-center sm:text-left">
-        <div class="leading-tight dark:text-gray-100">
-          Astro Portfolio Starter
-        </div>
-        <div
-          class="text-blue-700 dark:text-blue-500 leading-tight sm:mr-16"
-        >
-          Powered by Astro and Tailwind CSS
-        </div>
-      </div>
-      <div class="mt-8 sm:mt-0">
-        <Image src={developerImage} alt="developer" class="mx-auto sm:mx-0" />
-      </div>
-    </section>
-    <!-- end hero -->
 
-    <section class="max-w-3xl mx-auto px-4 xl:px-0">
-      <p class="dark:text-gray-100">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore non
-        ipsa sed hic illum ex corrupti quasi, corporis consequatur praesentium
-        fugiat perferendis sunt molestias temporibus placeat magnam aspernatur
-        sequi iure pariatur reprehenderit maxime doloremque ut facilis illo.
-        Corrupti, vel et?
-      </p>
-
-      <div class="flex justify-between items-center my-14">
-        <div class="w-full sm:w-1/2 px-8 py-8 sm:py-0">
-          <Image src={mindMapImage} alt="mind map" />
-        </div>
-        <div class="w-1/2 px-8 hidden sm:flex justify-end">
-          <Image src={codeReviewImage} alt="code review" />
-        </div>
-      </div>
-    </section>
-
-    <section
-      id="projects"
-      class="scroll-mt-16 max-w-3xl mx-auto border-t border-b border-gray-300 dark:border-gray-700 py-16 mb-16 relative px-4 xl:px-0"
-    >
-      <h3 class="dark:text-gray-100 font-bold">
-        Here are some projects I've worked on:
-      </h3>
-
-      <div class="absolute right-0 transform rotate-180 translate-x-[120%]">
-        <Image src={dotsTriangle} alt="dots" class="hidden xl:block" />
-      </div>
-
-      <ul class="text-blue-600 dark:text-blue-500 mt-10 space-y-6">
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 1
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 2
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 3
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-        <li class="flex items-start">
-          <IconCheckmark />
-          <span class="ml-4">
-            <h4 class="text-gray-800 dark:text-gray-100 font-semibold">
-              Project Name 4
-            </h4>
-            <p class="text-gray-600 dark:text-gray-300 mt-2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Veritatis ad neque doloribus quod exercitationem est nulla
-              reiciendis in unde eum.
-            </p>
-          </span>
-        </li>
-      </ul>
-    </section>
-
-    <section
-      id="contact"
-      class="scroll-mt-28 bg-gray-100 dark:bg-slate-800 mt-10 py-12 px-4 xl:px-0"
-    >
-      <div class="max-w-3xl mx-auto relative">
-        <h3 class="font-bold dark:text-gray-100">Contact me</h3>
-
-        <div class="absolute left-0 transform -translate-x-[120%] rotate-180">
-          <Image src={dotsTriangle} alt="dots" />
-        </div>
-
-        <form id="index-contact-form" class="mt-12 flex flex-col gap-5">
-          <!-- honeypot -->
-          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
-            <label for="index-website">Website</label>
-            <input id="index-website" name="website" type="text" tabindex="-1" autocomplete="off" />
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div class="flex flex-col gap-1">
-              <label for="index-first-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
-              <input
-                id="index-first-name"
-                name="firstName"
-                type="text"
-                required
-                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div class="flex flex-col gap-1">
-              <label for="index-last-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
-              <input
-                id="index-last-name"
-                name="lastName"
-                type="text"
-                required
-                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label for="index-email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
-            <input
-              id="index-email"
-              name="email"
-              type="email"
-              required
-              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p id="index-email-error" class="text-xs text-red-600 dark:text-red-400 hidden">Please enter a valid email address.</p>
-          </div>
-
-          <div class="flex flex-col gap-1">
-            <label for="index-message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
-            <textarea
-              id="index-message"
-              name="message"
-              required
-              rows="5"
-              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 dark:text-gray-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            class="self-start rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium px-6 py-2.5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+    <!-- Hero -->
+    <section class="mx-auto max-w-3xl px-4 xl:px-0 pt-36 pb-20 flex flex-col sm:flex-row items-center gap-10">
+      <Image
+        src={headshot}
+        alt="Ben Wittbrodt"
+        class="w-56 h-56 rounded-2xl object-cover shadow-md shrink-0"
+      />
+      <div>
+        <h1 class="text-4xl font-bold dark:text-gray-100">
+          Hey, I'm <span class="text-blue-700 dark:text-blue-400">Ben Wittbrodt</span>
+        </h1>
+        <p class="mt-3 text-gray-600 dark:text-gray-300 text-lg leading-relaxed">
+          I write about personal finance, watches, and home automation — the things I spend too much time thinking about.
+        </p>
+        <div class="flex gap-3 mt-6">
+          <a
+            href="/articles"
+            class="rounded-lg bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium px-5 py-2.5 transition-colors"
           >
-            Send message
-          </button>
-
-          <p id="index-form-status" class="text-sm hidden"></p>
-        </form>
+            Read articles
+          </a>
+          <a
+            href="/contact"
+            class="rounded-lg border border-gray-300 dark:border-gray-600 hover:border-blue-700 dark:hover:border-blue-400 text-gray-700 dark:text-gray-300 text-sm font-medium px-5 py-2.5 transition-colors"
+          >
+            Get in touch
+          </a>
+        </div>
       </div>
     </section>
+
+    <!-- Topics -->
+    <section class="bg-gray-50 dark:bg-slate-800 py-16 px-4 xl:px-0 hidden">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-2xl font-bold dark:text-gray-100 mb-8">What I write about</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {topics.map(topic => (
+            <div class="bg-white dark:bg-slate-700 rounded-xl p-6 shadow-sm">
+              <div class="text-blue-700 dark:text-blue-400 mb-3" set:html={topic.icon} />
+              <h3 class="font-semibold dark:text-gray-100 mb-1">{topic.title}</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{topic.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Articles -->
+    <section class="mx-auto max-w-3xl px-4 xl:px-0 py-16">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-2xl font-bold dark:text-gray-100">Recent articles</h2>
+        <a href="/articles" class="text-sm text-blue-700 dark:text-blue-400 hover:underline font-medium">
+          View all &rarr;
+        </a>
+      </div>
+
+      {recentPosts.length === 0 ? (
+        <p class="text-gray-500 dark:text-gray-400">No articles yet — check back soon.</p>
+      ) : (
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {recentPosts.map(post => (
+            <a href={`/articles/${post.slug}`} class="group flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-blue-700 dark:hover:border-blue-400 transition-colors">
+              {post.featuredImage ? (
+                <img
+                  src={getMediaUrl(post.featuredImage.formats?.medium?.url ?? post.featuredImage.url)}
+                  alt={post.featuredImage.alternativeText ?? post.title}
+                  class="w-full h-40 object-cover"
+                  transition:name={`featured-image-${post.slug}`}
+                />
+              ) : (
+                <div class="w-full h-40 bg-gray-100 dark:bg-slate-700" />
+              )}
+              <div class="p-4 flex flex-col flex-1">
+                <p class="text-xs text-gray-400 dark:text-gray-500 mb-1">
+                  <DatePresenter date={post.date} transitionName={post.date.toString()} />
+                </p>
+                <h3 class="font-semibold dark:text-gray-100 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors leading-snug">
+                  {post.title}
+                </h3>
+                {post.summary && (
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 line-clamp-2 flex-1">
+                    {post.summary}
+                  </p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+
   </main>
 </Layout>
-
-<script>
-  const form = document.getElementById('index-contact-form') as HTMLFormElement
-  const status = document.getElementById('index-form-status') as HTMLParagraphElement
-  const button = form.querySelector('button[type="submit"]') as HTMLButtonElement
-  const emailInput = form.elements.namedItem('email') as HTMLInputElement
-  const emailError = document.getElementById('index-email-error') as HTMLParagraphElement
-  const honeypot = form.elements.namedItem('website') as HTMLInputElement
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  const loadedAt = Date.now()
-
-  emailInput.addEventListener('blur', () => {
-    if (emailInput.value && !emailRegex.test(emailInput.value)) {
-      emailError.classList.remove('hidden')
-      emailInput.classList.add('border-red-500')
-    } else {
-      emailError.classList.add('hidden')
-      emailInput.classList.remove('border-red-500')
-    }
-  })
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-
-    if (honeypot.value || Date.now() - loadedAt < 3000) {
-      status.textContent = 'Message sent! I\'ll get back to you soon.'
-      status.className = 'text-sm text-green-600 dark:text-green-400'
-      status.classList.remove('hidden')
-      form.reset()
-      return
-    }
-
-    if (!emailRegex.test(emailInput.value)) {
-      emailError.classList.remove('hidden')
-      emailInput.classList.add('border-red-500')
-      emailInput.focus()
-      return
-    }
-
-    button.disabled = true
-    button.textContent = 'Sending…'
-    status.classList.add('hidden')
-
-    const data = {
-      firstName: (form.elements.namedItem('firstName') as HTMLInputElement).value,
-      lastName: (form.elements.namedItem('lastName') as HTMLInputElement).value,
-      email: emailInput.value,
-      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value,
-    }
-
-    try {
-      const res = await fetch('https://n8n.811mapleton.com/webhook/600a9966-580c-4a2d-bb77-bc493552a0ab', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-
-      if (!res.ok) throw new Error()
-
-      status.textContent = 'Message sent! I\'ll get back to you soon.'
-      status.className = 'text-sm text-green-600 dark:text-green-400'
-      form.reset()
-    } catch {
-      status.textContent = 'Something went wrong. Please try again.'
-      status.className = 'text-sm text-red-600 dark:text-red-400'
-    } finally {
-      status.classList.remove('hidden')
-      button.disabled = false
-      button.textContent = 'Send message'
-    }
-  })
-</script>
