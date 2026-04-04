@@ -1,0 +1,39 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PostsList from '@/components/PostsList.astro'
+import { getPosts } from '@/lib/strapi'
+import { normalizePost } from '@/lib/strapi-blocks'
+import { sortPostsByDateDesc } from '@/utils/post-utils'
+import type { GetStaticPathsOptions } from 'astro'
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const posts = (await getPosts()).map(normalizePost).sort(sortPostsByDateDesc)
+
+  const categoryMap = new Map<string, string>()
+  for (const post of posts) {
+    if (post.category) {
+      categoryMap.set(post.category.slug, post.category.title)
+    }
+  }
+
+  return [...categoryMap.entries()].flatMap(([slug, title]) => {
+    const categoryPosts = posts.filter(post => post.category?.slug === slug)
+    return paginate(categoryPosts, {
+      pageSize: 10,
+      params: { category: slug },
+      props: { category: title },
+    })
+  })
+}
+
+const { category, page } = Astro.props
+---
+
+<Layout title={`Category: ${category}`}>
+  <PostsList
+    page={page}
+    posts={page.data}
+    category={category}
+    total={page.total}
+  />
+</Layout>

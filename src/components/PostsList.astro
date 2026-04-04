@@ -9,26 +9,27 @@ const {
   page,
   posts,
   tag = null,
+  category = null,
   total = null,
 } = Astro.props as {
   page: Page<NormalizedPost>
   posts: NormalizedPost[]
   tag: string | null
+  category: string | null
   total: number | null
 }
 ---
 
 <section
-  class="mx-auto max-w-3xl w-full dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20"
+  class="mx-auto max-w-3xl w-full mt-40 px-4 xl:px-0 mb-20"
 >
-  {
-    tag && (
-      <h2 class="text-4xl font-bold mb-6">
-        Tag: {tag} ({total})
-      </h2>
-    )
-  }
-  <div class="posts divide-y divide:gray-400 dark:divide-gray-700">
+  {tag && (
+    <h2 class="text-4xl font-bold mb-6">Tag: {tag} ({total})</h2>
+  )}
+  {category && (
+    <h2 class="text-4xl font-bold mb-6">Category: {category} ({total})</h2>
+  )}
+  <div class="posts divide-y divide:gray-400">
     {
       posts.map(post => (
         <div class="post py-8">
@@ -42,16 +43,24 @@ const {
               />
             </a>
           )}
-          <div class="text-base flex gap-2">
+          <div class="flex items-center gap-3">
             <DatePresenter
               date={post.date}
               transitionName={post.date.toString()}
             />
+            {post.category && (
+              <a
+                href={`/categories/${post.category.slug}`}
+                class="text-xs font-semibold uppercase tracking-wide bg-blue-700 text-white rounded-md px-3 py-1 hover:bg-blue-600 transition-colors"
+              >
+                {post.category.title}
+              </a>
+            )}
           </div>
           <h2 class="text-3xl font-bold mt-1" transition:name={post.title}>
             <a
               href={`/articles/${post.slug}`}
-              class="hover:text-gray-500 dark:hover:text-gray-300"
+              class="hover:text-gray-500"
             >
               {post.title}
             </a>
@@ -60,14 +69,14 @@ const {
           {post.tags.length > 0 && <TagsPresenter tags={post.tags} />}
 
           {post.summary && (
-            <div class="line-clamp-3 text-gray-600 dark:text-gray-300 mt-4">
+            <div class="line-clamp-3 text-gray-600 mt-4">
               {post.summary}
             </div>
           )}
           <div class="mt-4">
             <a
               href={`/articles/${post.slug}`}
-              class="font-bold uppercase hover:text-gray-500 dark:hover:text-gray-300"
+              class="font-bold uppercase hover:text-gray-500"
             >
               Read More
             </a>
@@ -78,11 +87,11 @@ const {
   </div>
   {
     page.lastPage !== 1 && (
-      <div class="pagination flex justify-between text-base items-center border-t border-gray-200 dark:border-gray-700 pt-8">
+      <div class="pagination flex justify-between text-base items-center border-t border-gray-200 pt-8">
         {page.url.prev ? (
           <a
             href={page.url.prev}
-            class="hover:text-gray-500 dark:hover:text-gray-300"
+            class="hover:text-gray-500"
           >
             &larr; Prev
           </a>
@@ -97,7 +106,7 @@ const {
         {page.url.next ? (
           <a
             href={page.url.next}
-            class="hover:text-gray-500 dark:hover:text-gray-300"
+            class="hover:text-gray-500"
           >
             Next &rarr;
           </a>

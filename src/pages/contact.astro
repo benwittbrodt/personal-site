@@ -5,7 +5,7 @@ import headshot from '@/images/headshot.jpg'
 ---
 
 <Layout title="Contact" showNewsletter={false}>
-  <section class="mx-auto max-w-3xl dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20">
+  <section class="mx-auto max-w-3xl mt-40 px-4 xl:px-0 mb-20">
 
     <div class="flex flex-col sm:flex-row gap-12 items-start">
 
@@ -18,11 +18,11 @@ import headshot from '@/images/headshot.jpg'
         />
         <div>
           <h2 class="text-2xl font-bold">Ben Wittbrodt</h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
+          <p class="text-sm text-gray-500 mt-2 leading-relaxed">
             Have a question, collab idea, or just want to say hi? Fill out the form and I'll get back to you.
           </p>
-          <div class="flex flex-col gap-1 mt-4 text-sm text-gray-500 dark:text-gray-400">
-            <a href="mailto:ben@wittbrodt.me" class="hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+          <div class="flex flex-col gap-1 mt-4 text-sm text-gray-500">
+            <a href="mailto:ben@wittbrodt.me" class="hover:text-blue-700 transition-colors">
               ben@wittbrodt.me
             </a>
           </div>
@@ -32,7 +32,7 @@ import headshot from '@/images/headshot.jpg'
       <!-- Right: form -->
       <div class="flex-1 w-full">
         <h2 class="text-3xl font-bold mb-6">
-          Get in <span class="text-blue-700 dark:text-blue-400">Touch</span>
+          Get in <span class="text-blue-700">Touch</span>
         </h2>
 
         <form id="contact-form" class="flex flex-col gap-5">
@@ -44,47 +44,47 @@ import headshot from '@/images/headshot.jpg'
 
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col gap-1">
-              <label for="first-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">First name</label>
+              <label for="first-name" class="text-sm font-medium text-gray-700">First name</label>
               <input
                 id="first-name"
                 name="firstName"
                 type="text"
                 required
-                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div class="flex flex-col gap-1">
-              <label for="last-name" class="text-sm font-medium text-gray-700 dark:text-gray-300">Last name</label>
+              <label for="last-name" class="text-sm font-medium text-gray-700">Last name</label>
               <input
                 id="last-name"
                 name="lastName"
                 type="text"
                 required
-                class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           <div class="flex flex-col gap-1">
-            <label for="email" class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <label for="email" class="text-sm font-medium text-gray-700">Email</label>
             <input
               id="email"
               name="email"
               type="email"
               required
-              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <p id="email-error" class="text-xs text-red-600 dark:text-red-400 hidden">Please enter a valid email address.</p>
+            <p id="email-error" class="text-xs text-red-600 hidden">Please enter a valid email address.</p>
           </div>
 
           <div class="flex flex-col gap-1">
-            <label for="message" class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</label>
+            <label for="message" class="text-sm font-medium text-gray-700">Message</label>
             <textarea
               id="message"
               name="message"
               required
               rows="5"
-              class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              class="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             ></textarea>
           </div>
 
@@ -129,7 +129,7 @@ import headshot from '@/images/headshot.jpg'
       if (honeypot.value || Date.now() - loadedAt < 3000) {
         // silently succeed so bots don't know they were blocked
         status.textContent = 'Message sent! I\'ll get back to you soon.'
-        status.className = 'text-sm text-green-600 dark:text-green-400'
+        status.className = 'text-sm text-green-600'
         status.classList.remove('hidden')
         form.reset()
         return
@@ -163,11 +163,11 @@ import headshot from '@/images/headshot.jpg'
         if (!res.ok) throw new Error()
 
         status.textContent = 'Message sent! I\'ll get back to you soon.'
-        status.className = 'text-sm text-green-600 dark:text-green-400'
+        status.className = 'text-sm text-green-600'
         form.reset()
       } catch {
         status.textContent = 'Something went wrong. Please try again.'
-        status.className = 'text-sm text-red-600 dark:text-red-400'
+        status.className = 'text-sm text-red-600'
       } finally {
         status.classList.remove('hidden')
         button.disabled = false

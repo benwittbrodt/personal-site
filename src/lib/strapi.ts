@@ -52,6 +52,21 @@ export interface StrapiExperience {
   CompanyLogo: StrapiMedia | null
 }
 
+export interface StrapiCategory {
+  id: number
+  documentId: string
+  Title: string
+  Description: string
+  slug: string
+}
+
+export interface StrapiTag {
+  id: number
+  documentId: string
+  Title: string
+  Slug: string
+}
+
 export interface StrapiPost {
   id: number
   documentId: string
@@ -60,6 +75,8 @@ export interface StrapiPost {
   Content: StrapiNode[] | null
   FeaturedImage: StrapiMedia | null
   PreviewText: string | null
+  category: StrapiCategory | null
+  tags: StrapiTag[]
   createdAt: string
   updatedAt: string
   publishedAt: string
@@ -82,7 +99,8 @@ export interface NormalizedPost {
   title: string
   date: Date
   summary: string
-  tags: string[]
+  tags: { title: string; slug: string }[]
+  category: { title: string; slug: string } | null
   contentHtml: string
   documentId: string
   featuredImage: StrapiMedia | null
@@ -109,7 +127,7 @@ async function strapiGet<T>(path: string): Promise<T> {
 }
 
 export async function getPosts(): Promise<StrapiPost[]> {
-  return strapiGet<StrapiPost[]>('/api/posts?sort=publishedAt:desc&pagination[pageSize]=100&populate=FeaturedImage')
+  return strapiGet<StrapiPost[]>('/api/posts?sort=publishedAt:desc&pagination[pageSize]=100&populate[0]=FeaturedImage&populate[1]=category&populate[2]=tags')
 }
 
 export async function getBackground(): Promise<StrapiBackground> {

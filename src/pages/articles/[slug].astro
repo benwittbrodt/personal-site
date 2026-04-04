@@ -18,7 +18,7 @@ const { post } = Astro.props
 
 <Layout title={post.title}>
   <section
-    class="mx-auto max-w-3xl dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20"
+    class="mx-auto max-w-3xl mt-40 px-4 xl:px-0 mb-20"
   >
     <div class="post py-8">
       {post.featuredImage && (
@@ -29,24 +29,32 @@ const { post } = Astro.props
           transition:name={`featured-image-${post.slug}`}
         />
       )}
-      <div class="text-base flex gap-2">
+      <div class="flex items-center gap-3">
         <DatePresenter
           date={post.date}
           transitionName={post.date.toString()}
         />
+        {post.category && (
+          <a
+            href={`/categories/${post.category.slug}`}
+            class="text-xs font-semibold uppercase tracking-wide bg-blue-700 text-white rounded-md px-3 py-1 hover:bg-blue-600 transition-colors"
+          >
+            {post.category.title}
+          </a>
+        )}
       </div>
       <h2 class="text-4xl font-bold mt-1" transition:name={post.title}>
         {post.title}
       </h2>
       {post.tags.length > 0 && <TagsPresenter tags={post.tags} />}
       <div
-        class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300 mt-8"
+        class="prose prose-lg max-w-none text-gray-600 mt-8"
         set:html={post.contentHtml}
       />
-      <div class="pt-8 mt-8 border-t border-gray-300 dark:border-gray-700">
+      <div class="pt-8 mt-8 border-t border-gray-300">
         <a
           href="/articles"
-          class="font-bold uppercase hover:text-gray-500 dark:hover:text-gray-300"
+          class="font-bold uppercase hover:text-gray-500"
         >
           Back to Articles
         </a>

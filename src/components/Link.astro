@@ -11,7 +11,7 @@ const { href, newTab = false } = Astro.props
   !newTab && (
     <a
       href={href}
-      class="font-semibold text-blue-700 dark:text-blue-400 hover:underline"
+      class="font-semibold text-blue-700 hover:underline"
     >
       <slot />
     </a>
@@ -22,7 +22,7 @@ const { href, newTab = false } = Astro.props
   newTab && (
     <a
       href={href}
-      class="font-semibold text-blue-700 dark:text-blue-400 hover:underline"
+      class="font-semibold text-blue-700 hover:underline"
       target="_blank"
       rel="noopener noreferrer"
     >

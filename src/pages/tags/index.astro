@@ -5,39 +5,38 @@ import { normalizePost } from '@/lib/strapi-blocks'
 
 const posts = (await getPosts()).map(normalizePost)
 const allTags = posts.flatMap(post => post.tags)
-const tags = [...new Set(allTags)]
 
-const tagsWithTotals = tags.map(tag => ({
-  name: tag,
-  total: allTags.filter(t => t === tag).length,
-}))
+const tagMap = new Map<string, { title: string; slug: string; total: number }>()
+for (const tag of allTags) {
+  if (tagMap.has(tag.slug)) {
+    tagMap.get(tag.slug)!.total++
+  } else {
+    tagMap.set(tag.slug, { title: tag.title, slug: tag.slug, total: 1 })
+  }
+}
 
-tagsWithTotals.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name))
+const tags = [...tagMap.values()].sort((a, b) => b.total - a.total || a.title.localeCompare(b.title))
 ---
 
 <Layout title="Tags">
-  <section
-    class="mx-auto max-w-3xl w-full dark:text-gray-100 mt-40 px-4 xl:px-0 mb-20"
-  >
+  <section class="mx-auto max-w-3xl w-full mt-40 px-4 xl:px-0 mb-20">
     <h2 class="text-4xl font-semibold">Tags ({tags.length})</h2>
 
-    {
-      tags.length === 0 ? (
-        <p class="mt-8 text-gray-500 dark:text-gray-400">No tags yet.</p>
-      ) : (
-        <ul class="flex items-center flex-wrap text-sm gap-x-6 gap-y-8 mt-8">
-          {tagsWithTotals.map(tag => (
-            <li>
-              <a
-                href={`/tags/${tag.name}`}
-                class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-200 dark:hover:bg-blue-300 text-blue-800 rounded-lg px-3 py-2"
-              >
-                {tag.name} ({tag.total})
-              </a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
+    {tags.length === 0 ? (
+      <p class="mt-8 text-gray-500">No tags yet.</p>
+    ) : (
+      <ul class="flex items-center flex-wrap text-sm gap-x-4 gap-y-4 mt-8">
+        {tags.map(tag => (
+          <li>
+            <a
+              href={`/tags/${tag.slug}`}
+              class="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full px-4 py-2 transition-colors"
+            >
+              {tag.title} ({tag.total})
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
   </section>
 </Layout>
